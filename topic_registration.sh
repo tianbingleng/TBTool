@@ -4,20 +4,22 @@ KAFKA_LIB_WORKSPACE=/Users/tianbingleng/Documents/JavaWorkspace/kafka-streams-li
 AVRO_SCHEMA_DIR=/Users/tianbingleng/Documents/JavaWorkspace/kafka-streams-lib/src/main/resources/avroschemas/notifications
 
 
-FILE_1=dailypacingoverview.avsc
-TOPIC_1=pacing_overview_daily_notification
+FILE_1=issueslineitem.avsc
+TOPIC_1=issues_lineitem
 
-FILE_2=impressiondailypacingoverview.avsc
-TOPIC_2=pacing_overview_daily_impression_notification
+FILE_2=issueslineitemtransform.avsc
+TOPIC_2=issues_lineitem_transform
 
-FILE_3=kpiinsights.avsc
-TOPIC_3=kpi_insights_notification
+FILE_3=insuserlineitem.avsc
+TOPIC_3=ins_user_lineitems
 
 FILE_4=tokeninvalidadaccount.avsc
 TOPIC_4=token_invalid_adaccount_notification
 
 FILE_5=tokeninvaliduser.avsc
 TOPIC_5=token_invalid_user_notification
+
+
 
 
 AVRO_FILES=($FILE_1 $FILE_2 $FILE_3 $FILE_4 $FILE_5)
@@ -40,9 +42,11 @@ cp $AVRO_SCHEMA_DIR/* $WORKSPACE/
 len=${#AVRO_FILES[@]}
  
 ## Use bash for loop 
+cd $WORKSPACE
 for (( i=0; i<$len; i++ )); do 
 	export SCHEMA_REGISTRY_URL=http://localhost:8081
 	export TOPIC_NAME=${KAFKA_TOPICS[$i]}
 	export AVRO_SCHEMA_FILE=${AVRO_FILES[$i]}
+	python register_schema.py 
 done
 
